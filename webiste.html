@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f4f4;
+    }
+    header {
+      background: #333; color: #fff;
+      padding: 1em; text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+      justify-content: center;
+    }
+    .product {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 200px;
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product button {
+      margin-top: 10px;
+      padding: 8px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .cart {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My Simple Shop</h1>
+</header>
+
+<div class="container" id="product-list">
+  <!-- Products will be loaded here -->
+</div>
+
+<div class="cart">
+  <h2>Shopping Cart</h2>
+  <ul id="cart-items"></ul>
+  <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+</div>
+
+<script>
+  const products = [
+    { id: 1, name: "T-Shirt", price: 15.00, image: "https://via.placeholder.com/200x150?text=T-Shirt" },
+    { id: 2, name: "Jeans", price: 40.00, image: "https://via.placeholder.com/200x150?text=Jeans" },
+    { id: 3, name: "Shoes", price: 60.00, image: "https://via.placeholder.com/200x150?text=Shoes" },
+    { id: 4, name: "Hat", price: 10.00, image: "https://via.placeholder.com/200x150?text=Hat" },
+  ];
+
+  const cart = [];
+
+  function loadProducts() {
+    const list = document.getElementById('product-list');
+    products.forEach(product => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>$${product.price.toFixed(2)}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    cart.push(product);
+    updateCart();
+  }
+
+  function updateCart() {
+    const list = document.getElementById('cart-items');
+    const totalSpan = document.getElementById('total');
+    list.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+      list.appendChild(li);
+      total += item.price;
+    });
+    totalSpan.textContent = total.toFixed(2);
+  }
+
+  window.onload = loadProducts;
+</script>
+
+</body>
+</html>
